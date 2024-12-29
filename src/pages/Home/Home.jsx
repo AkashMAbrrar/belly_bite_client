@@ -4,6 +4,7 @@ import Category from "./category/Category";
 import MidSection from "../../components/MidSection/MidSection";
 import PopularMenu from "./PopularMenu/PopularMenu";
 import Features from "./Features/Features";
+import Testimonials from "./Testimonials/Testimonials";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <MidSection></MidSection>
       <PopularMenu></PopularMenu>
       <Features></Features>
+      <Testimonials></Testimonials>
     </div>
   );
 };
