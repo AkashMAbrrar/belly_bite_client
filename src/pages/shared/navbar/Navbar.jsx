@@ -1,16 +1,18 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import logo from "../../../../public/logo.png";
 
 const Navbar = () => {
   const navLinks = (
     <>
       <li>
-        <a>Item 1</a>
+        <Link to="/">Home</Link>
       </li>
       <li>
-        <a>Parent</a>
+        <Link to="/menu">Menu</Link>
       </li>
       <li>
-        <a>Item 3</a>
+        <Link>Item 3</Link>
       </li>
     </>
   );
@@ -42,7 +44,9 @@ const Navbar = () => {
             </ul>
           </div>
           <a className="btn btn-ghost text-xl text-white font-bold">
-            Belly BiteB{" "}
+            Belly
+            <img className="w-8" src={logo} alt="" />
+            BiteB
           </a>
         </div>
         <div className="navbar-center hidden lg:flex">
