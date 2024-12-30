@@ -2,7 +2,7 @@ import React from "react";
 
 const MenuItems = ({ item }) => {
   const { name, image, category, price, recipe } = item;
-  console.table(item);
+  // console.table(item);
 
   return (
     <div className="flex space-x-4 bg-gray-100 p-2">
