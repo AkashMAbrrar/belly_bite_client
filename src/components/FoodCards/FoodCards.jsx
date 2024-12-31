@@ -4,18 +4,21 @@ const FoodCards = ({ item }) => {
   const { name, image, category, price, recipe } = item;
 
   return (
-    <div className="card bg-base-100 w-96 shadow-xl">
+    <div className="card bg-base-200 h-[541px]  shadow-xl rounded-none">
       <figure>
-        <img
-          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          alt="Shoes"
-        />
+        <img src={image} alt="foods" />
       </figure>
+      <p className="absolute right-0 mr-4 mt-4 p-1 rounded-md bg-slate-900 text-white font-semibold">
+        Price $:{price}
+      </p>
       <div className="card-body">
-        <h2 className="card-title">Shoes!</h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Buy Now</button>
+        <h2 className="card-title">{name}</h2>
+        <p>Category: {category}</p>
+        <p>Recipe: {recipe}</p>
+        <div className="card-actions justify-center">
+          <button className="btn btn-ghost font-bold hover:bg-black text-orange-500">
+            Order Now
+          </button>
         </div>
       </div>
     </div>
