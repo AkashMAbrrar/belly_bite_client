@@ -16,7 +16,7 @@ const FoodCards = ({ item }) => {
         <p>Category: {category}</p>
         <p>Recipe: {recipe}</p>
         <div className="card-actions justify-center">
-          <button className="btn btn-ghost font-bold hover:bg-black text-orange-500">
+          <button className="btn btn-outline text-orange-500 border-0 border-b-4">
             Order Now
           </button>
         </div>
