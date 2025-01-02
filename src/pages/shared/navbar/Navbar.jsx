@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../../../public/logo.png";
+import { authContext } from "../../../provider/AuthProvider";
 
 const Navbar = () => {
+  const { user, logoutUser } = useContext(authContext);
+
+  const handleLogout = () => {
+    logoutUser()
+      .then(() => {
+        console.log("User Logout successful");
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
   const navLinks = (
     <>
       <li>
@@ -15,7 +28,13 @@ const Navbar = () => {
         <Link to="/orders/salad">Order Foods</Link>
       </li>
       <li>
-        <Link to="/login">Login</Link>
+        {user ? (
+          <button onClick={handleLogout} className="btn btn-warning">
+            Logout
+          </button>
+        ) : (
+          <Link to="/login">Login</Link>
+        )}
       </li>
     </>
   );

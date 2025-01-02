@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import loginImg from "../../assets/others/authentication2.png";
 import loginBg from "../../assets/others/authentication.png";
 import {
@@ -9,11 +9,12 @@ import {
 } from "react-simple-captcha";
 import { authContext } from "../../provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
+import Swal from "sweetalert2";
 
 const Login = () => {
-  const captchaRef = useRef(null);
   const [disable, setDisable] = useState(true);
   const { signInUser } = useContext(authContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadCaptchaEnginge(6);
@@ -29,14 +30,22 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your work has been saved",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/");
       })
-      .then((error) => {
+      .catch((error) => {
         console.log(error.message);
       });
   };
 
-  const handleValidCaptcha = () => {
-    const user_captcha_value = captchaRef.current.value;
+  const handleValidCaptcha = (e) => {
+    const user_captcha_value = e.target.value;
     if (validateCaptcha(user_captcha_value)) {
       setDisable(false);
     } else {
@@ -91,17 +100,15 @@ const Login = () => {
                 </label>
                 <input
                   type="text"
-                  ref={captchaRef}
+                  onBlur={handleValidCaptcha}
                   name="captcha"
                   placeholder="Enter the captcha code"
                   className="input input-bordered rounded"
                   required
                 />
-                <button
-                  onClick={handleValidCaptcha}
-                  className="btn btn-outline btn-info btn-xs mt-2">
+                <p className="text-white font-bold p-4 cursor-pointer rounded-xl w-28 mt-4 bg-blue-700">
                   Validate
-                </button>
+                </p>
               </div>
               <div className="form-control mt-6">
                 <input
