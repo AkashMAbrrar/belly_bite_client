@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImg from "../../assets/others/authentication2.png";
 import loginBg from "../../assets/others/authentication.png";
 import {
@@ -15,6 +15,9 @@ const Login = () => {
   const [disable, setDisable] = useState(true);
   const { signInUser } = useContext(authContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     loadCaptchaEnginge(6);
@@ -37,7 +40,7 @@ const Login = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/");
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.log(error.message);

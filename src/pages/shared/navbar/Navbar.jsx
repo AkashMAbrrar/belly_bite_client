@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../../../public/logo.png";
 import { authContext } from "../../../provider/AuthProvider";
+import { FaCartPlus } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(authContext);
@@ -22,10 +23,21 @@ const Navbar = () => {
         <Link to="/">Home</Link>
       </li>
       <li>
+        <Link to="/dashboard">Dashboard</Link>
+      </li>
+      <li>
         <Link to="/menu">Menu</Link>
       </li>
       <li>
         <Link to="/orders/salad">Order Foods</Link>
+      </li>
+      <li>
+        <Link to="/">
+          <p className="text-white">
+            <FaCartPlus />
+          </p>
+          <div className="badge badge-secondary">+0</div>
+        </Link>
       </li>
       <li>
         {user ? (
@@ -83,28 +95,30 @@ const Navbar = () => {
               role="button"
               className="btn btn-ghost btn-circle avatar">
               <div className="w-16 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+                {user && user?.email ? (
+                  <div>
+                    <img
+                      src={user?.photoURL}
+                      title={user?.displayName}
+                      alt=""
+                    />
+                    <p className="w-10 rounded-full">{user?.displayName}</p>
+                  </div>
+                ) : (
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src="https://img.freepik.com/free-photo/close-up-portrait-happy-charming-african-guy-smiling-boyfriend-waiting-date-head-hunter-dream-standing-white-wall_176420-12540.jpg?w=360"
+                  />
+                )}
               </div>
             </div>
-            {/* <ul
+            <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+              className="menu menu-sm dropdown-content bg-black bg-opacity-30 text-white rounded-box z-[1] mt-3 w-52 p-2 shadow">
               <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
+                <a className="justify-between">Profile</a>
               </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
-            </ul> */}
+            </ul>
           </div>
         </div>
       </div>
