@@ -1,9 +1,54 @@
-import React from "react";
+import Swal from "sweetalert2";
+import useAuth from "../../hooks/useAuth";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const FoodCards = ({ item }) => {
-  const { name, image, category, price, recipe } = item;
+  const { name, image, category, price, recipe, _id } = item;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
   const handleAddToCart = (food) => {
-    console.log(food);
+    if (user && user?.email) {
+      // send cart item to the database
+      console.log(user.email, food);
+      const cartItems = {
+        menuId: _id,
+        email: user.email,
+        name,
+        image,
+        price,
+      };
+
+      axiosSecure.post("/carts", cartItems).then((res) => {
+        console.log(res.data);
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `${name} Added To The Cart`,
+            showConfirmButton: false,
+            timer: 2500,
+          });
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "Your Are Not Logged In !",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Login",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          //  send the user to the login page
+          navigate("/login", { state: { from: location } });
+        }
+      });
+    }
   };
 
   return (
