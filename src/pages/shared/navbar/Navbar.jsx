@@ -25,9 +25,9 @@ const Navbar = () => {
       <li>
         <Link to="/">Home</Link>
       </li>
-      <li>
+      {/* <li>
         <Link to="/dashboard">Dashboard</Link>
-      </li>
+      </li> */}
       <li>
         <Link to="/menu">Menu</Link>
       </li>
@@ -35,8 +35,8 @@ const Navbar = () => {
         <Link to="/orders/salad">Order Foods</Link>
       </li>
       <li>
-        <Link to="/">
-          <p className="text-white">
+        <Link to="/dashboard/cart">
+          <p className="text-green-600 text-3xl">
             <FaCartPlus />
           </p>
           <div className="badge badge-secondary">+{cart.length}</div>
