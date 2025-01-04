@@ -2,8 +2,10 @@ import React, { createContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
@@ -21,6 +23,7 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password).then();
   };
+  const googleProvider = new GoogleAuthProvider();
   //   login user
   const signInUser = (email, password) => {
     setLoading(true);
@@ -37,6 +40,11 @@ const AuthProvider = ({ children }) => {
       displayName: name,
       photoURL: photo,
     });
+  };
+  // sign in with google pop-up
+  const singInGoogle = () => {
+    setLoading(true);
+    return signInWithPopup(auth, googleProvider);
   };
 
   //  observer functionality
@@ -58,6 +66,7 @@ const AuthProvider = ({ children }) => {
     signInUser,
     logoutUser,
     updateUserProfile,
+    singInGoogle,
   };
 
   return (

@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { authContext } from "../../provider/AuthProvider";
 import Swal from "sweetalert2";
+import { FaGoogle } from "react-icons/fa";
 
 const Registration = () => {
   const {
@@ -15,7 +16,8 @@ const Registration = () => {
     reset,
     formState: { errors },
   } = useForm();
-  const { createUser, updateUserProfile } = useContext(authContext);
+  const { createUser, updateUserProfile, singInGoogle } =
+    useContext(authContext);
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
@@ -44,6 +46,20 @@ const Registration = () => {
       .catch((error) => {
         console.log(error.message);
       });
+  };
+
+  // google sign up
+  const handleGoogleSignIn = async () => {
+    try {
+      //User Registration using google
+      await singInGoogle();
+
+      navigate("/");
+      alert("Signup Successful");
+    } catch (err) {
+      console.log(err);
+      alert(err?.message);
+    }
   };
 
   return (
@@ -159,6 +175,13 @@ const Registration = () => {
                 </Link>
               </label>
             </form>
+            <div className="flex justify-center items-center mb-10">
+              <button
+                onClick={handleGoogleSignIn}
+                className="btn btn-ghost w-[307px]">
+                <FaGoogle></FaGoogle> Google
+              </button>
+            </div>
           </div>
         </div>
       </div>
