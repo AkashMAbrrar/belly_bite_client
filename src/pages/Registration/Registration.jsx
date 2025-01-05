@@ -1,15 +1,17 @@
 import React, { useContext } from "react";
 import loginImg from "../../assets/others/authentication2.png";
 import loginBg from "../../assets/others/authentication.png";
-
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { authContext } from "../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import { FaGoogle } from "react-icons/fa";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Registration = () => {
+  const axiosPublic = useAxiosPublic();
+
   const {
     register,
     handleSubmit,
@@ -28,38 +30,63 @@ const Registration = () => {
         console.log(loggedUser);
         updateUserProfile(data.name, data.photoURL)
           .then(() => {
-            console.log("user profile info updated");
-            reset();
-            Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "Registration Successful",
-              showConfirmButton: false,
-              timer: 1500,
+            // create user entry in the database
+            const userInfo = {
+              name: data.name,
+              email: data.email,
+            };
+            axiosPublic.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                console.log("User added to the database");
+                reset();
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "Registration Successful",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                navigate("/");
+              }
             });
-            navigate("/");
           })
           .catch((error) => {
-            console.log(error.message);
+            console.error(error.message);
           });
       })
       .catch((error) => {
-        console.log(error.message);
+        console.error(error.message);
       });
   };
 
-  // google sign up
+  // Google sign up
   const handleGoogleSignIn = async () => {
-    try {
-      //User Registration using google
-      await singInGoogle();
+    const result = await singInGoogle();
+    const loggedUser = result.user;
+    // update user profile in the database
 
-      navigate("/");
-      alert("Signup Successful");
-    } catch (err) {
-      console.log(err);
-      alert(err?.message);
-    }
+    const userInfo = {
+      name: loggedUser.displayName,
+      email: loggedUser.email,
+    };
+    axiosPublic
+      .post("/users", userInfo)
+      .then((res) => {
+        if (res.data.insertedId) {
+          console.log("user logged in to database");
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Signup Successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   return (
@@ -74,9 +101,9 @@ const Registration = () => {
         }}>
         <div className="hero-content flex ">
           <div className="text-center md:w-1/2 lg:text-left">
-            <img src={loginImg} alt="" />
+            <img src={loginImg} alt="Login" />
           </div>
-          <div className="card  md:w-1/2 max-w-sm shrink-0 rounded-none ">
+          <div className="card md:w-1/2 max-w-sm shrink-0 rounded-none ">
             <form onSubmit={handleSubmit(onSubmit)} className="card-body">
               {/* Email field */}
               <div className="form-control">
@@ -90,14 +117,14 @@ const Registration = () => {
                   type="email"
                   name="email"
                   {...register("email", { required: true })}
-                  placeholder="email"
+                  placeholder="Email"
                   className="input input-bordered rounded"
                   required
                 />
                 {errors.email && (
                   <span className="text-red-700">Email is required</span>
                 )}
-                {/* name fie */}
+                {/* Name field */}
                 <label className="label">
                   <span className="label-text">Name</span>
                 </label>
@@ -112,19 +139,20 @@ const Registration = () => {
                   <span className="text-red-700">Name is required</span>
                 )}
               </div>
+              {/* Photo URL field */}
               <label className="label">
-                <span className="label-text">Photo Url</span>
+                <span className="label-text">Photo URL</span>
               </label>
               <input
                 type="url"
                 {...register("photoURL", { required: true })}
-                placeholder="Photo url"
+                placeholder="Photo URL"
                 className="input input-bordered rounded"
               />
-              {errors.PhotoURL && (
-                <span className="text-red-700">Photo url is required</span>
+              {errors.photoURL && (
+                <span className="text-red-700">Photo URL is required</span>
               )}
-              {/* password field */}
+              {/* Password field */}
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Password</span>
@@ -139,26 +167,26 @@ const Registration = () => {
                     pattern:
                       /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,12}$/,
                   })}
-                  placeholder="password"
+                  placeholder="Password"
                   className="input input-bordered rounded"
                 />
                 {errors.password?.type === "required" && (
-                  <p className="text-red-600">Password Is Required</p>
+                  <p className="text-red-600">Password is required</p>
                 )}
                 {errors.password?.type === "minLength" && (
                   <p className="text-red-600">
-                    Password must be 6 character Required
+                    Password must be at least 6 characters
                   </p>
                 )}
                 {errors.password?.type === "maxLength" && (
                   <p className="text-red-600">
-                    Password shouldn't be longer than 12 character
+                    Password shouldn't be longer than 12 characters
                   </p>
                 )}
                 {errors.password?.type === "pattern" && (
                   <p className="text-red-600">
-                    Use A special symbol and at least one uppercase and a
-                    lowercase
+                    Use at least one special symbol, one uppercase letter, and
+                    one lowercase letter
                   </p>
                 )}
               </div>
@@ -166,12 +194,12 @@ const Registration = () => {
                 <input
                   className="btn btn-info"
                   type="submit"
-                  value="registration"
+                  value="Register"
                 />
               </div>
               <label className="label">
-                <Link to="/login" className=" link-hover text-blue-700">
-                  Already Have An Account? Login
+                <Link to="/login" className="link-hover text-blue-700">
+                  Already have an account? Login
                 </Link>
               </label>
             </form>
@@ -179,7 +207,7 @@ const Registration = () => {
               <button
                 onClick={handleGoogleSignIn}
                 className="btn btn-ghost w-[307px]">
-                <FaGoogle></FaGoogle> Google
+                <FaGoogle /> Google
               </button>
             </div>
           </div>
