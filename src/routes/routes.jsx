@@ -7,9 +7,9 @@ import Order from "../pages/Orders/Order";
 import Login from "../pages/Login/Login";
 import Registration from "../pages/Registration/Registration";
 import PrivetRoute from "./PrivetRoute";
-import Dashboard from "../pages/Home/Dashboard/Dashboard";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cart from "../pages/Home/Dashboard/Cart/Cart";
+import AllUsers from "../pages/allUsers/AllUsers";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +53,12 @@ export const router = createBrowserRouter([
             <Cart></Cart>
           </PrivetRoute>
         ),
+      },
+
+      // admin routes
+      {
+        path: "users",
+        element: <AllUsers></AllUsers>,
       },
     ],
   },

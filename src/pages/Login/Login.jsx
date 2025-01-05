@@ -11,6 +11,7 @@ import { authContext } from "../../provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 import { FaGoogle } from "react-icons/fa";
+import SocialLogin from "../shared/SocialLogin/SocialLogin";
 
 const Login = () => {
   const [disable, setDisable] = useState(true);
@@ -46,20 +47,6 @@ const Login = () => {
       .catch((error) => {
         console.log(error.message);
       });
-  };
-
-  // google sign up
-  const handleGoogleSignIn = async () => {
-    try {
-      //User Registration using google
-      await singInGoogle();
-
-      navigate("/");
-      alert("Signup Successful");
-    } catch (err) {
-      console.log(err);
-      alert(err?.message);
-    }
   };
 
   const handleValidCaptcha = (e) => {
@@ -143,12 +130,7 @@ const Login = () => {
               </label>
             </form>
             <div className="flex justify-center items-center">
-              <button
-                onClick={handleGoogleSignIn}
-                className="btn btn-accent text-xl">
-                {" "}
-                <FaGoogle></FaGoogle> Sign In With Google
-              </button>
+              <SocialLogin></SocialLogin>
             </div>
           </div>
         </div>

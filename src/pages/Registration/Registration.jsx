@@ -8,6 +8,7 @@ import { authContext } from "../../provider/AuthProvider";
 import Swal from "sweetalert2";
 import { FaGoogle } from "react-icons/fa";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import SocialLogin from "../shared/SocialLogin/SocialLogin";
 
 const Registration = () => {
   const axiosPublic = useAxiosPublic();
@@ -56,36 +57,6 @@ const Registration = () => {
       })
       .catch((error) => {
         console.error(error.message);
-      });
-  };
-
-  // Google sign up
-  const handleGoogleSignIn = async () => {
-    const result = await singInGoogle();
-    const loggedUser = result.user;
-    // update user profile in the database
-
-    const userInfo = {
-      name: loggedUser.displayName,
-      email: loggedUser.email,
-    };
-    axiosPublic
-      .post("/users", userInfo)
-      .then((res) => {
-        if (res.data.insertedId) {
-          console.log("user logged in to database");
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Signup Successful",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err.message);
       });
   };
 
@@ -204,11 +175,7 @@ const Registration = () => {
               </label>
             </form>
             <div className="flex justify-center items-center mb-10">
-              <button
-                onClick={handleGoogleSignIn}
-                className="btn btn-ghost w-[307px]">
-                <FaGoogle /> Google
-              </button>
+              <SocialLogin></SocialLogin>
             </div>
           </div>
         </div>
