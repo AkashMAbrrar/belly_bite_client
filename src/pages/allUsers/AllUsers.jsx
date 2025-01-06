@@ -16,6 +16,7 @@ const AllUsers = () => {
     },
   });
 
+  // delete an user handler
   const handleDeleteUser = (user) => {
     Swal.fire({
       title: "Are you sure?",
@@ -36,6 +37,22 @@ const AllUsers = () => {
               icon: "success",
             });
           }
+        });
+      }
+    });
+  };
+  // update an user for playing admin role
+  const handleAdmin = (user) => {
+    axiosSecure.patch(`/users/admin/${user._id}`).then((res) => {
+      console.log(res.data);
+      if (res.data.modifiedCount > 0) {
+        refetch();
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${user.name} is an Admin Now!`,
+          showConfirmButton: false,
+          timer: 1500,
         });
       }
     });
@@ -67,9 +84,15 @@ const AllUsers = () => {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>
-                  <button className="btn btn-xs btn-outline  font-bold text-2xl hover:bg-[#e3b96a]">
-                    <FaUsers />
-                  </button>
+                  {user.role === "admin" ? (
+                    "Admin"
+                  ) : (
+                    <button
+                      onClick={() => handleAdmin(user)}
+                      className="btn btn-xs btn-outline  font-bold text-2xl hover:bg-[#e3b96a]">
+                      <FaUsers />
+                    </button>
+                  )}
                 </td>
                 <td>
                   <button
