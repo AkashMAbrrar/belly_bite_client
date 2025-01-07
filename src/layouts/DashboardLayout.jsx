@@ -8,17 +8,17 @@ import {
   FaShoppingCart,
   FaUsers,
   FaUtensils,
-  FaVoicemail,
 } from "react-icons/fa";
 import { MdManageAccounts, MdOutlineRateReview } from "react-icons/md";
 import { TiThMenu } from "react-icons/ti";
 import { NavLink, Outlet } from "react-router-dom";
 import useCart from "../hooks/useCart";
+import useAdmin from "../hooks/useAdmin";
 
 const DashboardLayout = () => {
   const [cart] = useCart();
   // toDo: get isAdmin value form the database
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
 
   return (
     <div className="flex">
