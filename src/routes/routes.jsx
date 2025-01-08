@@ -10,11 +10,15 @@ import PrivetRoute from "./PrivetRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Cart from "../pages/Home/Dashboard/Cart/Cart";
 import AllUsers from "../pages/allUsers/AllUsers";
+import AddItems from "../pages/Home/Dashboard/Cart/AddItems/AddItems";
+import AdminRoute from "./AdminRoute";
+import ManageItems from "../pages/Home/Dashboard/Cart/manageItems/ManageItems";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <h2>Error 404 page not found</h2>,
     children: [
       {
         path: "/",
@@ -46,6 +50,7 @@ export const router = createBrowserRouter([
       </PrivetRoute>
     ),
     children: [
+      // normal users routes
       {
         path: "cart",
         element: (
@@ -57,8 +62,28 @@ export const router = createBrowserRouter([
 
       // admin routes
       {
+        path: "addItems",
+        element: (
+          <AdminRoute>
+            <AddItems></AddItems>
+          </AdminRoute>
+        ),
+      },
+      {
         path: "users",
-        element: <AllUsers></AllUsers>,
+        element: (
+          <AdminRoute>
+            <AllUsers></AllUsers>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manageItems",
+        element: (
+          <AdminRoute>
+            <ManageItems></ManageItems>
+          </AdminRoute>
+        ),
       },
     ],
   },
