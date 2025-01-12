@@ -38,7 +38,7 @@ const DashboardLayout = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/payment">
+                <NavLink to="/dashboard/paymentHistory">
                   <BsCreditCard2FrontFill /> Payment History
                 </NavLink>
               </li>
@@ -73,7 +73,7 @@ const DashboardLayout = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/payment">
+                <NavLink to="/dashboard/paymentHistory">
                   <BsCreditCard2FrontFill /> Payment History
                 </NavLink>
               </li>
